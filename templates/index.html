@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YouTube Music Web App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://www.youtube.com/iframe_api"></script>
+</head>
+<body>
+    <div class="app-container">
+        <header class="app-header">
+            <h1>Music</h1>
+            <form id="search-form" class="search-bar">
+                <input type="text" id="search-query" placeholder="노래, 아티스트 검색..." />
+                <button type="submit">🔍</button>
+            </form>
+        </header>
+
+        <main>
+            <section id="search-view" class="content-section">
+                <h2>검색 결과</h2>
+                <div id="search-results" class="grid-container">
+                    </div>
+            </section>
+
+            <section id="chart-section" class="content-section">
+                <h2>K-Pop 인기 차트</h2>
+                <div class="grid-container">
+                    {% for video in kpop_charts %}
+                    <div class="music-item" data-video='${JSON.stringify(video)}'>
+                        <img src="{{ video.thumbnail }}" alt="앨범 커버">
+                        <div class="item-details">
+                            <h3>{{ video.title }}</h3>
+                            <p>{{ video.channel_title }}</p>
+                        </div>
+                        <button class="add-to-playlist-btn">➕</button>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+
+            <section id="playlist-view" class="content-section">
+                <h2>내 플레이리스트</h2>
+                <div id="playlist-items" class="grid-container">
+                    </div>
+            </section>
+        </main>
+
+        <div id="player-view" class="player-view" style="display: none;">
+            <div id="youtube-player"></div>
+            <div class="player-details">
+                <img id="player-thumbnail" src="" alt="현재 재생 앨범 커버">
+                <div class="track-info">
+                    <h3 id="player-title"></h3>
+                    <p id="player-artist"></p>
+                </div>
+                <div class="player-controls">
+                    <button id="prev-btn">⏮️</button>
+                    <button id="play-pause-btn">▶️</button>
+                    <button id="next-btn">⏭️</button>
+                </div>
+            </div>
+            <button id="back-to-main-btn" class="back-button" style="display: none;">←</button>
+        </div>
+
+        <div class="loader" id="loader" style="display: none;"></div>
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
